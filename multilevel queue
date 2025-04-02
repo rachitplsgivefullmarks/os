@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_PROCESSES 100
+
+struct process {
+int pid; // Process ID
+int arrival_time; 
+int burst_time;
+};
+
+void executeQueue(struct process queue[], int size, const char *queueName) {
+printf("\nExecuting %s Queue:\n", queueName);
+int time = 0;
+
+for (int i = 0; i < size; i++) {
+printf("Process %d started at time %d and finished at time %d\n",
+queue[i].pid, time, time + queue[i].burst_time);
+time += queue[i].burst_time;
+}
+}
+
+int main() {
+struct process systemQueue[MAX_PROCESSES], userQueue[MAX_PROCESSES];
+int sysCount = 0, userCount = 0, n;
+
+printf("Enter the number of processes: ");
+scanf("%d", &n);
+
+for (int i = 0; i < n; i++) {
+int type;
+struct process p;
+
+printf("\nEnter details for Process %d\n", i + 1);
+printf("Process ID: ");
+scanf("%d", &p.pid);
+printf("Arrival Time: ");
+scanf("%d", &p.arrival_time);
+printf("Burst Time: ");
+scanf("%d", &p.burst_time);
+printf("Enter process type (0 = System, 1 = User): ");
+scanf("%d", &type);
+
+if (type == 0) {
+systemQueue[sysCount++] = p;
+} else {
+userQueue[userCount++] = p;
+}
+}
+
+executeQueue(systemQueue, sysCount, "System");
+
+executeQueue(userQueue, userCount, "User");
+
+return 0;
+}
